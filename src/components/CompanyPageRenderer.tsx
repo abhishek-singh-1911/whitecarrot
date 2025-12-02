@@ -17,11 +17,13 @@ interface CompanyPageRendererProps {
       title: string;
       content: string;
       image_url?: string;
+      video_url?: string;
     }>;
   };
+  showOpenRolesButton?: boolean;
 }
 
-export default function CompanyPageRenderer({ company }: CompanyPageRendererProps) {
+export default function CompanyPageRenderer({ company, showOpenRolesButton = true }: CompanyPageRendererProps) {
   const { theme } = company;
 
   return (
@@ -42,15 +44,21 @@ export default function CompanyPageRenderer({ company }: CompanyPageRendererProp
                 {company.name}
               </Typography>
             )}
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: theme.primaryColor,
-                '&:hover': { backgroundColor: theme.primaryColor, filter: 'brightness(0.9)' }
-              }}
-            >
-              View Open Roles
-            </Button>
+            {showOpenRolesButton && (
+              <Button
+                variant="contained"
+                onClick={() => {
+                  const element = document.getElementById('open-roles');
+                  element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }}
+                sx={{
+                  backgroundColor: theme.primaryColor,
+                  '&:hover': { backgroundColor: theme.primaryColor, filter: 'brightness(0.9)' }
+                }}
+              >
+                View Open Roles
+              </Button>
+            )}
           </Box>
         </Container>
       </Box>
@@ -118,20 +126,36 @@ export default function CompanyPageRenderer({ company }: CompanyPageRendererProp
                     overflow: 'hidden',
                     boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
                   }}>
-                    {/* Placeholder for video embed */}
-                    <Box sx={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      bgcolor: '#e5e7eb',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}>
-                      <Typography color="text.secondary">Video Embed Placeholder</Typography>
-                    </Box>
+                    {section.video_url ? (
+                      <iframe
+                        src={section.video_url}
+                        title={section.title}
+                        style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          border: 'none'
+                        }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    ) : (
+                      <Box sx={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        bgcolor: '#e5e7eb',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}>
+                        <Typography color="text.secondary">Add a video URL to display content</Typography>
+                      </Box>
+                    )}
                   </Box>
                 </Container>
               </Box>

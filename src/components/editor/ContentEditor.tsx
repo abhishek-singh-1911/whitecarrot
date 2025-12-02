@@ -26,6 +26,7 @@ interface Section {
   title: string;
   content: string;
   image_url?: string;
+  video_url?: string;
   order: number;
 }
 
@@ -145,6 +146,17 @@ export default function ContentEditor({ sections, onChange }: ContentEditorProps
                                 onChange={(e) => handleUpdateSection(index, 'image_url', e.target.value)}
                                 fullWidth
                                 placeholder="https://example.com/image.jpg"
+                              />
+                            )}
+
+                            {section.type === 'video' && (
+                              <TextField
+                                label="Video URL"
+                                value={section.video_url || ''}
+                                onChange={(e) => handleUpdateSection(index, 'video_url', e.target.value)}
+                                fullWidth
+                                placeholder="YouTube or Vimeo embed URL (e.g., https://www.youtube.com/embed/VIDEO_ID)"
+                                helperText="Use the embed URL, not the regular video link"
                               />
                             )}
 

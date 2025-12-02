@@ -22,9 +22,14 @@ import {
 } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 
-const drawerWidth = 280;
+interface DashboardSidebarProps {
+  mobileOpen?: boolean;
+  onDrawerToggle?: () => void;
+}
 
-export default function DashboardSidebar() {
+const drawerWidth = 240;
+
+export default function DashboardSidebar({ mobileOpen = false, onDrawerToggle }: DashboardSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [companySlug, setCompanySlug] = useState('');
@@ -52,20 +57,8 @@ export default function DashboardSidebar() {
     { text: 'Jobs', icon: <WorkIcon />, path: '/dashboard/jobs' },
   ];
 
-  return (
-    <Drawer
-      variant="permanent"
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        [`& .MuiDrawer-paper`]: {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-          borderRight: '1px solid #e5e7eb',
-          backgroundColor: '#f9fafb'
-        },
-      }}
-    >
+  const drawerContent = (
+    <>
       <Box sx={{ p: 3 }}>
         <Typography variant="h6" fontWeight="700" color="primary">
           Careers Builder
@@ -82,6 +75,7 @@ export default function DashboardSidebar() {
                 <ListItemButton
                   selected={pathname === item.path}
                   component="a"
+                  onClick={onDrawerToggle} // Close drawer on mobile when clicking link
                   sx={{
                     borderRadius: 2,
                     '&.Mui-selected': {
@@ -132,6 +126,46 @@ export default function DashboardSidebar() {
           Logout
         </Button>
       </Box>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <Box
+      component="nav"
+      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+    >
+      {/* Mobile Drawer (Temporary) */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onDrawerToggle}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        sx={{
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+      >
+        {drawerContent}
+      </Drawer>
+
+      {/* Desktop Drawer (Permanent) */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+            width: drawerWidth,
+            borderRight: '1px solid #e5e7eb',
+            backgroundColor: '#f9fafb'
+          },
+        }}
+        open
+      >
+        {drawerContent}
+      </Drawer>
+    </Box>
   );
 }

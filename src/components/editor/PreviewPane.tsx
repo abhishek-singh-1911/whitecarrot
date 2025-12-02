@@ -28,7 +28,7 @@ export default function PreviewPane({ company }: PreviewPaneProps) {
         }}
       >
         <Box sx={{ height: '100%', overflowY: 'auto' }}>
-          <CompanyPageRenderer company={company} />
+          <CompanyPageRenderer company={company} showOpenRolesButton={false} />
         </Box>
       </Paper>
     </Box>

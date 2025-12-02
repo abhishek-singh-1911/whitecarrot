@@ -17,6 +17,7 @@ export interface ICompany extends Document {
     title: string;
     content: string;
     image_url?: string;
+    video_url?: string;
     order: number;
   }>;
   createdAt: Date;
@@ -90,6 +91,7 @@ const CompanySchema = new Schema<ICompany>(
         title: String,
         content: String,
         image_url: String,
+        video_url: String,
         order: {
           type: Number,
           required: true,

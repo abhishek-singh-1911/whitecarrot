@@ -41,7 +41,7 @@ export default function JobList({ jobs, company }: JobListProps) {
   });
 
   return (
-    <Box sx={{ py: 8, backgroundColor: '#f9fafb', fontFamily: company.theme.font }}>
+    <Box id="open-roles" sx={{ py: 8, backgroundColor: '#f9fafb', fontFamily: company.theme.font }}>
       <Container maxWidth="lg">
         <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom>
           Open Positions
