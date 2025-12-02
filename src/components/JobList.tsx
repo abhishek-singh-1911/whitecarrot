@@ -23,6 +23,9 @@ interface JobListProps {
       primaryColor: string;
       backgroundColor: string;
       font: string;
+      titleColor?: string;
+      bodyColor?: string;
+      buttonTextColor?: string;
     };
   };
 }
@@ -41,12 +44,12 @@ export default function JobList({ jobs, company }: JobListProps) {
   });
 
   return (
-    <Box id="open-roles" sx={{ py: 8, backgroundColor: '#f9fafb', fontFamily: company.theme.font }}>
+    <Box id="open-roles" sx={{ py: 8, backgroundColor: company.theme.backgroundColor || '#f9fafb', fontFamily: company.theme.font }}>
       <Container maxWidth="lg">
-        <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom>
+        <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom sx={{ color: company.theme.titleColor || 'inherit' }}>
           Open Positions
         </Typography>
-        <Typography textAlign="center" color="text.secondary" sx={{ mb: 6 }}>
+        <Typography textAlign="center" sx={{ mb: 6, color: company.theme.bodyColor || 'text.secondary' }}>
           Find your next role at {company.slug}
         </Typography>
 
@@ -105,10 +108,10 @@ export default function JobList({ jobs, company }: JobListProps) {
                   <CardContent sx={{ p: 3 }}>
                     <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                       <Box>
-                        <Typography variant="h6" fontWeight="600" gutterBottom>
+                        <Typography variant="h6" fontWeight="600" gutterBottom sx={{ color: company.theme.titleColor || 'inherit' }}>
                           {job.title}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                        <Typography variant="body2" gutterBottom sx={{ color: company.theme.bodyColor || 'text.secondary' }}>
                           {job.department}
                         </Typography>
                       </Box>

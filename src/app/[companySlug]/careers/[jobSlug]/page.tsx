@@ -68,7 +68,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ com
   const { theme } = company;
 
   return (
-    <Box sx={{ minHeight: '100vh', backgroundColor: '#f9fafb', fontFamily: theme.font }}>
+    <Box sx={{ minHeight: '100vh', backgroundColor: theme.backgroundColor || '#f9fafb', fontFamily: theme.font }}>
       {/* Header */}
       <Box sx={{ backgroundColor: 'white', borderBottom: '1px solid #e5e7eb', py: 2 }}>
         <Container maxWidth="lg">
@@ -85,7 +85,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ com
           {/* Main Content */}
           <Grid size={{ xs: 12, md: 8 }}>
             <Box mb={4}>
-              <Typography variant="h3" fontWeight="700" gutterBottom sx={{ color: '#111827' }}>
+              <Typography variant="h3" fontWeight="700" gutterBottom sx={{ color: theme.titleColor || '#111827' }}>
                 {job.title}
               </Typography>
               <Box display="flex" gap={2} alignItems="center" mb={2}>
@@ -112,7 +112,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ com
                 variant="body1"
                 sx={{
                   whiteSpace: 'pre-wrap',
-                  color: '#4b5563',
+                  color: theme.bodyColor || '#4b5563',
                   lineHeight: 1.8
                 }}
               >
@@ -132,6 +132,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ com
                 sx={{
                   mb: 3,
                   backgroundColor: theme.primaryColor,
+                  color: theme.buttonTextColor || '#ffffff',
                   '&:hover': { backgroundColor: theme.primaryColor, filter: 'brightness(0.9)' },
                   py: 1.5
                 }}

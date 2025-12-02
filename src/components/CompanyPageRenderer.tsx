@@ -11,6 +11,9 @@ interface CompanyPageRendererProps {
       primaryColor: string;
       backgroundColor: string;
       font: string;
+      titleColor?: string;
+      bodyColor?: string;
+      buttonTextColor?: string;
     };
     content_sections: Array<{
       type: 'hero' | 'text' | 'video' | 'gallery';
@@ -31,7 +34,7 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
       backgroundColor: theme.backgroundColor,
       minHeight: '100vh',
       fontFamily: theme.font,
-      color: '#1f2937' // Default text color
+      color: theme.bodyColor || '#1f2937'
     }}>
       {/* Header */}
       <Box component="header" sx={{ py: 2, borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
@@ -53,6 +56,7 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
                 }}
                 sx={{
                   backgroundColor: theme.primaryColor,
+                  color: theme.buttonTextColor || '#ffffff',
                   '&:hover': { backgroundColor: theme.primaryColor, filter: 'brightness(0.9)' }
                 }}
               >
@@ -74,10 +78,10 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
                 backgroundColor: index === 0 ? 'rgba(0,0,0,0.02)' : 'transparent'
               }}>
                 <Container maxWidth="md">
-                  <Typography variant="h2" fontWeight="800" gutterBottom sx={{ color: '#111827' }}>
+                  <Typography variant="h2" fontWeight="800" gutterBottom sx={{ color: theme.titleColor || '#111827' }}>
                     {section.title}
                   </Typography>
-                  <Typography variant="h5" color="text.secondary" sx={{ mb: 4, maxWidth: 600, mx: 'auto' }}>
+                  <Typography variant="h5" sx={{ mb: 4, maxWidth: 600, mx: 'auto', color: theme.bodyColor || 'text.secondary' }}>
                     {section.content}
                   </Typography>
                   {section.image_url && (
@@ -100,10 +104,10 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
           case 'text':
             return (
               <Container key={index} maxWidth="md" sx={{ py: 8 }}>
-                <Typography variant="h3" fontWeight="700" gutterBottom>
+                <Typography variant="h3" fontWeight="700" gutterBottom sx={{ color: theme.titleColor || '#111827' }}>
                   {section.title}
                 </Typography>
-                <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.75, color: '#4b5563' }}>
+                <Typography variant="body1" sx={{ fontSize: '1.125rem', lineHeight: 1.75, color: theme.bodyColor || '#4b5563' }}>
                   {section.content}
                 </Typography>
               </Container>
@@ -111,12 +115,12 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
 
           case 'video':
             return (
-              <Box key={index} sx={{ py: 8, backgroundColor: '#f9fafb' }}>
+              <Box key={index} sx={{ py: 8, backgroundColor: index === 0 ? 'rgba(0,0,0,0.02)' : 'transparent' }}>
                 <Container maxWidth="lg">
-                  <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom>
+                  <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom sx={{ color: theme.titleColor || '#111827' }}>
                     {section.title}
                   </Typography>
-                  <Typography textAlign="center" sx={{ mb: 4, color: 'text.secondary' }}>
+                  <Typography textAlign="center" sx={{ mb: 4, color: theme.bodyColor || 'text.secondary' }}>
                     {section.content}
                   </Typography>
                   <Box sx={{

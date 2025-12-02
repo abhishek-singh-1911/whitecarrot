@@ -10,6 +10,9 @@ export interface ICompany extends Document {
     primaryColor: string;
     backgroundColor: string;
     font: string;
+    titleColor: string;
+    bodyColor: string;
+    buttonTextColor: string;
   };
   departments: string[];
   content_sections: Array<{
@@ -75,6 +78,18 @@ const CompanySchema = new Schema<ICompany>(
       font: {
         type: String,
         default: 'Inter',
+      },
+      titleColor: {
+        type: String,
+        default: '#111827',
+      },
+      bodyColor: {
+        type: String,
+        default: '#4b5563',
+      },
+      buttonTextColor: {
+        type: String,
+        default: '#ffffff',
       },
     },
     departments: {
