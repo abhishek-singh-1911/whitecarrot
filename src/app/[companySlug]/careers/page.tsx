@@ -42,8 +42,9 @@ async function getCompanyJobs(companyId: string) {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { companySlug: string } }): Promise<Metadata> {
-  const company = await getCompanyData(params.companySlug);
+export async function generateMetadata({ params }: { params: Promise<{ companySlug: string }> }): Promise<Metadata> {
+  const { companySlug } = await params;
+  const company = await getCompanyData(companySlug);
 
   if (!company) {
     return {
@@ -57,8 +58,9 @@ export async function generateMetadata({ params }: { params: { companySlug: stri
   };
 }
 
-export default async function CareersPage({ params }: { params: { companySlug: string } }) {
-  const company = await getCompanyData(params.companySlug);
+export default async function CareersPage({ params }: { params: Promise<{ companySlug: string }> }) {
+  const { companySlug } = await params;
+  const company = await getCompanyData(companySlug);
 
   if (!company) {
     notFound();

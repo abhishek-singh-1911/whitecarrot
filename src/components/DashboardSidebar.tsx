@@ -115,7 +115,7 @@ export default function DashboardSidebar() {
             fullWidth
             variant="outlined"
             startIcon={<ViewIcon />}
-            href={`/api/company/${companySlug}`} // Temporary link to API for now, will be public page later
+            href={`/${companySlug}/careers`}
             target="_blank"
             sx={{ mb: 2 }}
           >

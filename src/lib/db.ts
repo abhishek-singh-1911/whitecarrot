@@ -30,6 +30,7 @@ if (!global.mongoose) {
 
 async function dbConnect(): Promise<typeof mongoose> {
   if (cached.conn) {
+    console.log('🔄 Using cached MongoDB connection');
     return cached.conn;
   }
 
@@ -38,9 +39,25 @@ async function dbConnect(): Promise<typeof mongoose> {
       bufferCommands: false,
     };
 
+    // Log connection attempt (hide password)
+    const sanitizedUri = MONGODB_URI.replace(/:[^:@]+@/, ':****@');
+    console.log('🔌 Attempting to connect to MongoDB...');
+    console.log('📍 Connection string:', sanitizedUri);
+
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       console.log('✅ MongoDB connected successfully');
+      if (mongoose.connection.db) {
+        console.log('📦 Database:', mongoose.connection.db.databaseName);
+      }
       return mongoose;
+    }).catch((error) => {
+      console.error('❌ MongoDB connection failed:', error.message);
+      console.error('🔍 Error details:', {
+        code: error.code,
+        syscall: error.syscall,
+        hostname: error.hostname
+      });
+      throw error;
     });
   }
 
@@ -48,6 +65,7 @@ async function dbConnect(): Promise<typeof mongoose> {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
+    console.error('❌ Failed to establish MongoDB connection');
     throw e;
   }
 
