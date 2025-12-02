@@ -19,6 +19,7 @@ import {
   Add as AddIcon,
   DragIndicator as DragIcon
 } from '@mui/icons-material';
+import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
 
 interface Section {
   type: 'hero' | 'text' | 'video' | 'gallery';
@@ -56,78 +57,118 @@ export default function ContentEditor({ sections, onChange }: ContentEditorProps
     onChange(newSections);
   };
 
+  const onDragEnd = (result: DropResult) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(sections);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    // Update order property
+    const updatedItems = items.map((item, index) => ({
+      ...item,
+      order: index
+    }));
+
+    onChange(updatedItems);
+  };
+
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
         Page Content
       </Typography>
 
-      <Stack spacing={2}>
-        {sections.map((section, index) => (
-          <Accordion key={index} defaultExpanded={index === 0}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Stack direction="row" alignItems="center" spacing={2} sx={{ width: '100%' }}>
-                <DragIcon color="action" />
-                <Typography fontWeight="500">
-                  {section.title || 'Untitled Section'} ({section.type})
-                </Typography>
-              </Stack>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Stack spacing={2}>
-                <TextField
-                  select
-                  label="Section Type"
-                  value={section.type}
-                  onChange={(e) => handleUpdateSection(index, 'type', e.target.value)}
-                  fullWidth
-                >
-                  <MenuItem value="hero">Hero Banner</MenuItem>
-                  <MenuItem value="text">Text Block</MenuItem>
-                  <MenuItem value="video">Video Embed</MenuItem>
-                  <MenuItem value="gallery">Image Gallery</MenuItem>
-                </TextField>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="sections">
+          {(provided) => (
+            <Stack
+              spacing={2}
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {sections.map((section, index) => (
+                <Draggable key={index} draggableId={`section-${index}`} index={index}>
+                  {(provided) => (
+                    <Box
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                    >
+                      <Accordion defaultExpanded={index === 0}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                          <Stack direction="row" alignItems="center" spacing={2} sx={{ width: '100%' }}>
+                            <Box {...provided.dragHandleProps} sx={{ display: 'flex', alignItems: 'center', cursor: 'grab' }}>
+                              <DragIcon color="action" />
+                            </Box>
+                            <Typography fontWeight="500">
+                              {section.title || 'Untitled Section'} ({section.type})
+                            </Typography>
+                          </Stack>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Stack spacing={2}>
+                            <TextField
+                              select
+                              label="Section Type"
+                              value={section.type}
+                              onChange={(e) => handleUpdateSection(index, 'type', e.target.value)}
+                              fullWidth
+                            >
+                              <MenuItem value="hero">Hero Banner</MenuItem>
+                              <MenuItem value="text">Text Block</MenuItem>
+                              <MenuItem value="video">Video Embed</MenuItem>
+                              <MenuItem value="gallery">Image Gallery</MenuItem>
+                            </TextField>
 
-                <TextField
-                  label="Title"
-                  value={section.title}
-                  onChange={(e) => handleUpdateSection(index, 'title', e.target.value)}
-                  fullWidth
-                />
+                            <TextField
+                              label="Title"
+                              value={section.title}
+                              onChange={(e) => handleUpdateSection(index, 'title', e.target.value)}
+                              fullWidth
+                            />
 
-                <TextField
-                  label="Content / Description"
-                  value={section.content}
-                  onChange={(e) => handleUpdateSection(index, 'content', e.target.value)}
-                  multiline
-                  rows={4}
-                  fullWidth
-                />
+                            <TextField
+                              label="Content / Description"
+                              value={section.content}
+                              onChange={(e) => handleUpdateSection(index, 'content', e.target.value)}
+                              multiline
+                              rows={4}
+                              fullWidth
+                            />
 
-                {(section.type === 'hero' || section.type === 'gallery') && (
-                  <TextField
-                    label="Image URL"
-                    value={section.image_url || ''}
-                    onChange={(e) => handleUpdateSection(index, 'image_url', e.target.value)}
-                    fullWidth
-                    placeholder="https://example.com/image.jpg"
-                  />
-                )}
+                            {(section.type === 'hero' || section.type === 'gallery') && (
+                              <TextField
+                                label="Image URL"
+                                value={section.image_url || ''}
+                                onChange={(e) => handleUpdateSection(index, 'image_url', e.target.value)}
+                                fullWidth
+                                placeholder="https://example.com/image.jpg"
+                              />
+                            )}
 
-                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
-                  <Button
-                    color="error"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => handleRemoveSection(index)}
-                  >
-                    Remove Section
-                  </Button>
-                </Box>
-              </Stack>
-            </AccordionDetails>
-          </Accordion>
-        ))}
-      </Stack>
+                            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                              <Button
+                                color="error"
+                                startIcon={<DeleteIcon />}
+                                onClick={() => handleRemoveSection(index)}
+                              >
+                                Remove Section
+                              </Button>
+                            </Box>
+                          </Stack>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Box>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </Stack>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       <Button
         variant="outlined"
