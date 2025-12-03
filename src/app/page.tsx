@@ -1,7 +1,20 @@
+'use client';
+
 import { Box, Button, Container, Typography } from '@mui/material';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/edit');
+    }
+  }, [router]);
+
   return (
     <Box
       sx={{

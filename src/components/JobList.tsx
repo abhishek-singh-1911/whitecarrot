@@ -3,7 +3,6 @@
 import { Box, Container, Typography, Grid, Card, CardContent, Chip, Button, TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon, Place as PlaceIcon, Work as WorkIcon } from '@mui/icons-material';
 import { useState } from 'react';
-import Link from 'next/link';
 
 interface Job {
   _id: string;
@@ -226,22 +225,21 @@ export default function JobList({ jobs, company }: JobListProps) {
                       </Box>
                     </Box>
 
-                    <Link href={`/${company.slug}/careers/${job.job_slug || job._id}`} passHref legacyBehavior>
-                      <Button
-                        variant="outlined"
-                        fullWidth
-                        sx={{
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => alert("applied")}
+                      sx={{
+                        borderColor: company.theme.primaryColor,
+                        color: company.theme.primaryColor,
+                        '&:hover': {
                           borderColor: company.theme.primaryColor,
-                          color: company.theme.primaryColor,
-                          '&:hover': {
-                            borderColor: company.theme.primaryColor,
-                            backgroundColor: `${company.theme.primaryColor}05`
-                          }
-                        }}
-                      >
-                        View Details
-                      </Button>
-                    </Link>
+                          backgroundColor: `${company.theme.primaryColor}05`
+                        }
+                      }}
+                    >
+                      Apply
+                    </Button>
                   </CardContent>
                 </Card>
               </Grid>
