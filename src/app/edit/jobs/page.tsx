@@ -143,22 +143,21 @@ export default function JobsPage() {
         </Button>
       </Box>
 
-      <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+      {/* Desktop Table View */}
+      <TableContainer component={Paper} sx={{ overflowX: 'auto', display: { xs: 'none', md: 'block' } }}>
         <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               <TableCell>Title</TableCell>
-              <TableCell>Department</TableCell>
-              <TableCell>Location</TableCell>
+              <TableCell>Department / Location</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Applicants</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {jobs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} align="center" sx={{ py: 8 }}>
+                <TableCell colSpan={4} align="center" sx={{ py: 8 }}>
                   <Typography color="text.secondary">No jobs posted yet.</Typography>
                   <Button sx={{ mt: 2 }} onClick={handleCreateJob}>Create your first job</Button>
                 </TableCell>
@@ -170,8 +169,10 @@ export default function JobsPage() {
                     <Typography fontWeight="500">{job.title}</Typography>
                     <Typography variant="caption" color="text.secondary">{job.employment_type}</Typography>
                   </TableCell>
-                  <TableCell>{job.department}</TableCell>
-                  <TableCell>{job.location}</TableCell>
+                  <TableCell>
+                    <Typography variant="body2">{job.department}</Typography>
+                    <Typography variant="caption" color="text.secondary">{job.location}</Typography>
+                  </TableCell>
                   <TableCell>
                     <Chip
                       label={job.isOpen ? 'Active' : 'Closed'}
@@ -179,7 +180,6 @@ export default function JobsPage() {
                       size="small"
                     />
                   </TableCell>
-                  <TableCell>0</TableCell> {/* Placeholder for applicants */}
                   <TableCell align="right">
                     <IconButton size="small" onClick={() => handleEditJob(job)}>
                       <EditIcon />
@@ -194,6 +194,55 @@ export default function JobsPage() {
           </TableBody>
         </Table>
       </TableContainer>
+
+      {/* Mobile Card View */}
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        {jobs.length === 0 ? (
+          <Paper sx={{ p: 4, textAlign: 'center' }}>
+            <Typography color="text.secondary">No jobs posted yet.</Typography>
+            <Button sx={{ mt: 2 }} onClick={handleCreateJob}>Create your first job</Button>
+          </Paper>
+        ) : (
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {jobs.map((job) => (
+              <Paper key={job._id} sx={{ p: 2 }}>
+                {/* First Row: Title and Department/Location */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography fontWeight="500">{job.title}</Typography>
+                    <Typography variant="caption" color="text.secondary" display="block">
+                      {job.employment_type}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ ml: 2, textAlign: 'right' }}>
+                    <Typography variant="body2">{job.department}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {job.location}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Second Row: Status and Actions */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Chip
+                    label={job.isOpen ? 'Active' : 'Closed'}
+                    color={job.isOpen ? 'success' : 'default'}
+                    size="small"
+                  />
+                  <Box>
+                    <IconButton size="small" onClick={() => handleEditJob(job)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton size="small" color="error" onClick={() => handleDeleteJob(job._id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                </Box>
+              </Paper>
+            ))}
+          </Box>
+        )}
+      </Box>
 
       <JobEditorDialog
         open={dialogOpen}

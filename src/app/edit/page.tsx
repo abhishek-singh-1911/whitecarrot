@@ -103,8 +103,17 @@ export default function DashboardPage() {
           startIcon={saving ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />}
           onClick={handleSave}
           disabled={saving}
+          size="small"
+          sx={{
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            px: { xs: 1.5, sm: 2 },
+            py: { xs: 0.5, sm: 0.75 },
+            '& .MuiButton-startIcon': {
+              display: { xs: 'none', sm: 'inline-flex' }
+            }
+          }}
         >
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? 'Saving...' : 'Save'}
         </Button>
       </Box>
 
