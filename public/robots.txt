@@ -1,0 +1,13 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow admin/auth pages
+Disallow: /edit
+Disallow: /edit/*
+Disallow: /login
+Disallow: /signup
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://yoursite.com/sitemap.xml

@@ -47,6 +47,7 @@ async function getCompanyJobs(companyId: string) {
 export async function generateMetadata({ params }: { params: Promise<{ companySlug: string }> }): Promise<Metadata> {
   const { companySlug } = await params;
   const company = await getCompanyData(companySlug);
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
 
   if (!company) {
     return {
@@ -54,9 +55,49 @@ export async function generateMetadata({ params }: { params: Promise<{ companySl
     };
   }
 
+  const pageUrl = `${baseUrl}/${companySlug}/careers`;
+  const title = `${company.name} Careers - Join Our Team`;
+  const description = `Explore exciting career opportunities at ${company.name}. Join our team and help us build the future.`;
+
   return {
-    title: `${company.name} Careers`,
-    description: `Join the team at ${company.name}. View open roles and apply today.`,
+    title,
+    description,
+    keywords: [`${company.name} careers`, `${company.name} jobs`, 'job openings', 'career opportunities', 'hiring'],
+    alternates: {
+      canonical: pageUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      url: pageUrl,
+      siteName: company.name,
+      type: 'website',
+      images: company.logo_url ? [
+        {
+          url: company.logo_url,
+          width: 1200,
+          height: 630,
+          alt: `${company.name} Logo`,
+        },
+      ] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: company.logo_url ? [company.logo_url] : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
