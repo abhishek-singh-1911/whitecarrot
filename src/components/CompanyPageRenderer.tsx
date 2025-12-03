@@ -42,7 +42,20 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
         <Container maxWidth="lg">
           <Box display="flex" justifyContent="space-between" alignItems="center">
             {company.logo_url ? (
-              <img src={company.logo_url} alt={company.name} style={{ height: 40 }} />
+              <Box display="flex" flexDirection="column" alignItems="flex-start" gap={1}>
+                <img
+                  src={company.logo_url}
+                  alt={company.name}
+                  style={{
+                    height: 40,
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                    borderRadius: '4px'
+                  }}
+                />
+                <Typography variant="body2" fontWeight="600" sx={{ color: theme.titleColor || '#111827' }}>
+                  {company.name}
+                </Typography>
+              </Box>
             ) : (
               <Typography variant="h5" fontWeight="700" sx={{ color: theme.primaryColor }}>
                 {company.name}
