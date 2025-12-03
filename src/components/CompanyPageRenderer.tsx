@@ -20,6 +20,7 @@ interface CompanyPageRendererProps {
       title: string;
       content: string;
       image_url?: string;
+      gallery_images?: string[];
       video_url?: string;
     }>;
   };
@@ -161,6 +162,42 @@ export default function CompanyPageRenderer({ company, showOpenRolesButton = tru
                       </Box>
                     )}
                   </Box>
+                </Container>
+              </Box>
+            );
+
+          case 'gallery':
+            return (
+              <Box key={index} sx={{ py: 8, backgroundColor: index === 0 ? 'rgba(0,0,0,0.02)' : 'transparent' }}>
+                <Container maxWidth="lg">
+                  <Typography variant="h3" fontWeight="700" textAlign="center" gutterBottom sx={{ color: theme.titleColor || '#111827' }}>
+                    {section.title}
+                  </Typography>
+                  <Typography textAlign="center" sx={{ mb: 6, maxWidth: 800, mx: 'auto', color: theme.bodyColor || 'text.secondary' }}>
+                    {section.content}
+                  </Typography>
+                  <Grid container spacing={3}>
+                    {(section.gallery_images || []).map((url, imgIndex) => (
+                      <Grid key={imgIndex} size={{ xs: 12, sm: 6, md: 4 }}>
+                        <Box
+                          component="img"
+                          src={url}
+                          alt={`Gallery image ${imgIndex + 1}`}
+                          sx={{
+                            width: '100%',
+                            height: 300,
+                            objectFit: 'cover',
+                            borderRadius: 2,
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                            transition: 'transform 0.3s ease-in-out',
+                            '&:hover': {
+                              transform: 'scale(1.02)',
+                            }
+                          }}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Container>
               </Box>
             );

@@ -26,6 +26,7 @@ interface Section {
   title: string;
   content: string;
   image_url?: string;
+  gallery_images?: string[];
   video_url?: string;
   order: number;
 }
@@ -139,7 +140,7 @@ export default function ContentEditor({ sections, onChange }: ContentEditorProps
                               fullWidth
                             />
 
-                            {(section.type === 'hero' || section.type === 'gallery') && (
+                            {section.type === 'hero' && (
                               <TextField
                                 label="Image URL"
                                 value={section.image_url || ''}
@@ -147,6 +148,45 @@ export default function ContentEditor({ sections, onChange }: ContentEditorProps
                                 fullWidth
                                 placeholder="https://example.com/image.jpg"
                               />
+                            )}
+
+                            {section.type === 'gallery' && (
+                              <Stack spacing={2}>
+                                <Typography variant="subtitle2">Gallery Images</Typography>
+                                {(section.gallery_images || []).map((url, imgIndex) => (
+                                  <Stack key={imgIndex} direction="row" spacing={1}>
+                                    <TextField
+                                      fullWidth
+                                      size="small"
+                                      value={url}
+                                      onChange={(e) => {
+                                        const newImages = [...(section.gallery_images || [])];
+                                        newImages[imgIndex] = e.target.value;
+                                        handleUpdateSection(index, 'gallery_images', newImages);
+                                      }}
+                                      placeholder="Image URL"
+                                    />
+                                    <IconButton
+                                      color="error"
+                                      onClick={() => {
+                                        const newImages = (section.gallery_images || []).filter((_, i) => i !== imgIndex);
+                                        handleUpdateSection(index, 'gallery_images', newImages);
+                                      }}
+                                    >
+                                      <DeleteIcon />
+                                    </IconButton>
+                                  </Stack>
+                                ))}
+                                <Button
+                                  startIcon={<AddIcon />}
+                                  onClick={() => {
+                                    const newImages = [...(section.gallery_images || []), ''];
+                                    handleUpdateSection(index, 'gallery_images', newImages);
+                                  }}
+                                >
+                                  Add Image
+                                </Button>
+                              </Stack>
                             )}
 
                             {section.type === 'video' && (

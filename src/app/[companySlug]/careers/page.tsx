@@ -15,6 +15,8 @@ async function getCompanyData(slug: string) {
 
   if (!company) return null;
 
+  console.log('Fetched company sections:', JSON.stringify(company.content_sections, null, 2));
+
   // Serialize MongoDB ID
   return {
     ...company,

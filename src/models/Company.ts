@@ -20,6 +20,7 @@ export interface ICompany extends Document {
     title: string;
     content: string;
     image_url?: string;
+    gallery_images?: string[];
     video_url?: string;
     order: number;
   }>;
@@ -106,6 +107,7 @@ const CompanySchema = new Schema<ICompany>(
         title: String,
         content: String,
         image_url: String,
+        gallery_images: [String],
         video_url: String,
         order: {
           type: Number,
