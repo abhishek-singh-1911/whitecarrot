@@ -106,6 +106,13 @@ JobSchema.index({ company_id: 1, isOpen: 1 });
 JobSchema.index({ department: 1 });
 JobSchema.index({ work_policy: 1 });
 JobSchema.index({ employment_type: 1 });
+// Ensure job_slug is unique per company
+JobSchema.index({ company_id: 1, job_slug: 1 }, { unique: true });
+
+// Prevent Mongoose OverwriteModelError by deleting the model if it exists in development
+if (process.env.NODE_ENV === 'development' && mongoose.models.Job) {
+  delete mongoose.models.Job;
+}
 
 const Job: Model<IJob> =
   mongoose.models.Job || mongoose.model<IJob>('Job', JobSchema);

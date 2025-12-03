@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Auto-generate job_slug from title
-    const job_slug = jobData.title
+    let job_slug = jobData.title
       .toLowerCase()
       .trim()
       .replace(/[^a-z0-9\s-]/g, '')
@@ -106,12 +106,23 @@ export async function POST(req: NextRequest) {
       .replace(/-+/g, '-')
       .substring(0, 100);
 
+    // Ensure uniqueness within the company
+    let slugExists = await Job.findOne({ company_id: decoded.id, job_slug });
+
+    if (slugExists) {
+      // Append a random string to ensure uniqueness if the base slug exists
+      const randomSuffix = Math.random().toString(36).substring(2, 7);
+      job_slug = `${job_slug}-${randomSuffix}`;
+    }
+
     // Create job
     const job = await Job.create({
       ...jobData,
       company_id: decoded.id,
       job_slug,
     });
+
+    console.log(`Created job with slug: ${job_slug}`);
 
     return NextResponse.json(
       {

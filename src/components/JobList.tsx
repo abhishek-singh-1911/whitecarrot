@@ -141,7 +141,7 @@ export default function JobList({ jobs, company }: JobListProps) {
                       </Box>
                     </Box>
 
-                    <Link href={`/${company.slug}/careers/${job.job_slug}`} passHref legacyBehavior>
+                    <Link href={`/${company.slug}/careers/${job.job_slug || job._id}`} passHref legacyBehavior>
                       <Button
                         variant="outlined"
                         fullWidth

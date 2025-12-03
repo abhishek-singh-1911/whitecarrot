@@ -22,6 +22,35 @@ async function getJobData(companySlug: string, jobSlug: string) {
     isOpen: true
   }).lean();
 
+  // Fallback: Check if jobSlug is a valid ObjectId and try finding by ID (for backward compatibility)
+  if (!job && /^[0-9a-fA-F]{24}$/.test(jobSlug)) {
+    const jobById = await Job.findOne({
+      company_id: company._id,
+      _id: jobSlug,
+      isOpen: true
+    }).lean();
+
+    if (jobById) {
+      // If found by ID, use it
+      return {
+        job: {
+          ...jobById,
+          _id: jobById._id.toString(),
+          company_id: jobById.company_id.toString(),
+          date_posted: jobById.date_posted.toISOString(),
+          createdAt: jobById.createdAt.toISOString(),
+          updatedAt: jobById.updatedAt.toISOString(),
+        },
+        company: {
+          name: company.name,
+          slug: company.slug,
+          logo_url: company.logo_url,
+          theme: company.theme,
+        }
+      };
+    }
+  }
+
   if (!job) return null;
 
   return {

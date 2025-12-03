@@ -53,8 +53,8 @@ export default function DashboardSidebar({ mobileOpen = false, onDrawerToggle }:
   };
 
   const menuItems = [
-    { text: 'Editor', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Jobs', icon: <WorkIcon />, path: '/dashboard/jobs' },
+    { text: 'Editor', icon: <DashboardIcon />, path: '/edit' },
+    { text: 'Jobs', icon: <WorkIcon />, path: '/edit/jobs' },
   ];
 
   const drawerContent = (

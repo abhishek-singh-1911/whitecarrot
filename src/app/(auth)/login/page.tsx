@@ -43,7 +43,7 @@ export default function LoginPage() {
       localStorage.setItem('company', JSON.stringify(data.company));
 
       // Redirect to dashboard
-      router.push('/dashboard');
+      router.push('/edit');
     } catch (err: any) {
       setError(err.message);
       setLoading(false);
