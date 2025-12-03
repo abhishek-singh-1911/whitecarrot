@@ -9,6 +9,12 @@ jest.mock('next/link', () => {
   };
 });
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn(),
+  }),
+}));
+
 describe('Home Page', () => {
   it('renders the landing page correctly', () => {
     render(<Home />);

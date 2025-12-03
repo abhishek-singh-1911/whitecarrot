@@ -50,7 +50,7 @@ describe('JobList Component', () => {
   it('filters jobs by search term', () => {
     render(<JobList jobs={mockJobs as any} company={mockCompany} />);
 
-    const searchInput = screen.getByPlaceholderText('Search jobs by title or location...');
+    const searchInput = screen.getByPlaceholderText('Search jobs by title...');
     fireEvent.change(searchInput, { target: { value: 'Frontend' } });
 
     expect(screen.getByText('Senior Frontend Engineer')).toBeInTheDocument();
@@ -94,7 +94,7 @@ describe('JobList Component', () => {
   it('shows "No jobs found" when filter matches nothing', () => {
     render(<JobList jobs={mockJobs as any} company={mockCompany} />);
 
-    const searchInput = screen.getByPlaceholderText('Search jobs by title or location...');
+    const searchInput = screen.getByPlaceholderText('Search jobs by title...');
     fireEvent.change(searchInput, { target: { value: 'Nonexistent' } });
 
     expect(screen.getByText('No jobs found matching your criteria.')).toBeInTheDocument();
