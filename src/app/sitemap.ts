@@ -4,7 +4,7 @@ import Company from '@/models/Company';
 import Job from '@/models/Job';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://whitecarrot-five.vercel.app';
 
   await dbConnect();
 

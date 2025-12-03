@@ -47,7 +47,7 @@ async function getCompanyJobs(companyId: string) {
 export async function generateMetadata({ params }: { params: Promise<{ companySlug: string }> }): Promise<Metadata> {
   const { companySlug } = await params;
   const company = await getCompanyData(companySlug);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://whitecarrot-five.vercel.app';
 
   if (!company) {
     return {

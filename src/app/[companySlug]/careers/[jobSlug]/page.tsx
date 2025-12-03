@@ -74,7 +74,7 @@ async function getJobData(companySlug: string, jobSlug: string) {
 export async function generateMetadata({ params }: { params: Promise<{ companySlug: string; jobSlug: string }> }): Promise<Metadata> {
   const { companySlug, jobSlug } = await params;
   const data = await getJobData(companySlug, jobSlug);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://whitecarrot-five.vercel.app';
 
   if (!data) {
     return { title: 'Job Not Found' };
@@ -137,7 +137,7 @@ export default async function JobDetailsPage({ params }: { params: Promise<{ com
 
   const { job, company } = data;
   const { theme } = company;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://whitecarrot-five.vercel.app';
 
   // JobPosting JSON-LD structured data for Google Jobs
   const jobPostingSchema = {
