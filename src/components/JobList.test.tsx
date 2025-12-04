@@ -60,28 +60,7 @@ describe('JobList Component', () => {
   it('filters jobs by department', () => {
     render(<JobList jobs={mockJobs as any} company={mockCompany} />);
 
-    // Find the select element (MUI Select behaves a bit differently, but we used native select in the component)
-    // In JobList.tsx: <TextField select ... SelectProps={{ native: true }}>
-    // So it renders a real <select> inside.
-
-    // However, MUI TextField with select renders a div with role="button" if not native, 
-    // but we explicitly used `SelectProps={{ native: true }}` in the code I wrote earlier.
-    // Let's verify the code in JobList.tsx... 
-    // Yes: SelectProps={{ native: true }}
-
-    // So we can find by role 'combobox' or just by display value if it was a custom select, 
-    // but for native select we can use fireEvent.change on the select element.
-
-    // Since MUI TextField wraps the select, let's try to find it by value or role.
-    // Actually, let's just use getAllByRole('combobox') or similar.
-
-    // To be safe with MUI, let's look at the implementation again.
-    // It renders options.
-
     const selects = screen.getAllByRole('combobox');
-    // The first one might be something else if not careful, but here we have search (input text) and department (select).
-    // Search is input type text, so it's a textbox.
-    // Department is the select.
 
     const departmentSelect = selects[0]; // Should be the only combobox if search is just a textbox
 
