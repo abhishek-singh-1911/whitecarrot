@@ -56,3 +56,8 @@ This document records the usage of AI tools throughout the development of the Ca
 *   **AI as a Starter, not a Finisher**: AI is excellent at generating boilerplate code (schemas, basic components) and test structures. However, complex business logic (like specific filtering rules) and architectural decisions (Monolith vs. Microservices) require human engineering judgment.
 *   **Context is King**: Providing specific constraints (e.g., "MVP", "Next.js App Router") yields much better results than generic prompts.
 *   **Iterative Refinement**: The best code came from an iterative process—accepting the AI's draft, identifying gaps, and prompting for specific improvements.
+*   **AI has limitations**: The main limitation of AI are:
+    *   AI has limited token size.
+    *   AI hallucinations are a big issue.
+    *   AI is not perfect at generating code.
+*   **AI is not a replacement for a human engineer**: AI is a tool to help engineers, not replace them. It can generate code, but it cannot understand the context of the project, the business logic, or the architecture of the application.
